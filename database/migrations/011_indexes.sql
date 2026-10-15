@@ -1,0 +1,24 @@
+-- 011_indexes.sql  (foreign keys and common filters; add others only with a stated reason)
+CREATE INDEX ix_users_workspace ON users(workspace_id, is_active, role);
+CREATE INDEX ix_teams_workspace ON teams(workspace_id);
+CREATE INDEX ix_team_members_user ON team_members(user_id);
+CREATE INDEX ix_projects_workspace_status ON projects(workspace_id, status);
+CREATE INDEX ix_projects_team ON projects(team_id);
+CREATE INDEX ix_project_members_user ON project_members(user_id, project_id);
+CREATE INDEX ix_tasks_workspace_status ON tasks(workspace_id, status) WHERE deleted_at IS NULL;
+CREATE INDEX ix_tasks_project_status_pos ON tasks(project_id, status, position) WHERE deleted_at IS NULL;
+CREATE INDEX ix_tasks_due ON tasks(due_date) WHERE deleted_at IS NULL;
+CREATE INDEX ix_tasks_priority ON tasks(priority);
+CREATE INDEX ix_tasks_completed ON tasks(completed_at);
+CREATE INDEX ix_task_assignees_user ON task_assignees(user_id, task_id);
+CREATE INDEX ix_subtasks_task ON subtasks(task_id, sort_order);
+CREATE INDEX ix_task_labels_label ON task_labels(label_id);
+CREATE INDEX ix_comments_task ON comments(task_id, created_at);
+CREATE INDEX ix_mentions_user ON comment_mentions(mentioned_user_id);
+CREATE INDEX ix_notifications_inbox ON notifications(recipient_id, read_at, created_at DESC);
+CREATE INDEX ix_time_user_date ON time_entries(user_id, entry_date);
+CREATE INDEX ix_time_task ON time_entries(task_id);
+CREATE INDEX ix_recurring_next ON recurring_task_rules(is_active, next_due_date);
+CREATE INDEX ix_attendance_user_date ON attendance_logs(user_id, work_date);
+CREATE INDEX ix_leave_user_status ON leave_requests(user_id, status, start_date);
+CREATE INDEX ix_template_tasks_template ON project_template_tasks(template_id, sort_order);
